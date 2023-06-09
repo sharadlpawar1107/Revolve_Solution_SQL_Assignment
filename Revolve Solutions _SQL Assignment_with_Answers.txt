@@ -1,0 +1,58 @@
+1. Which manufacturer's planes had most no of flights? And how many flights?
+Ans: 
+
+SELECT manufacturer, COUNT(*) AS num_flights
+FROM planes
+JOIN flights ON planes.tailnum = flights.tailnum
+GROUP BY manufacturer
+ORDER BY num_flights DESC
+LIMIT 1;
+
+2. Which manufacturer's planes had most no of flying hours? And how many hours?
+Ans:
+
+SELECT p.manufacturer, SUM(f.air_time) AS total_flying_hours
+FROM planes p
+JOIN flights f ON p.tailnum = f.tailnum
+GROUP BY p.manufacturer
+ORDER BY total_flying_hours DESC
+LIMIT 1;
+
+3. Which plane flew the most number of hours? And how many hours?
+Ans:
+
+SELECT tailnum, SUM(CAST(air_time AS INT)) AS total_hours
+FROM flights
+GROUP BY tailnum
+ORDER BY total_hours DESC
+LIMIT 1;
+
+4. Which destination had most delay in flights?
+Ans: 
+
+SELECT dest, SUM(arr_delay) AS total_delay
+FROM flights
+GROUP BY dest
+ORDER BY total_delay DESC
+LIMIT 1;
+
+5. Which manufactures planes had covered most distance? And how much distance?
+Ans: 
+
+SELECT manufacturer, SUM(distance) AS total_distance
+FROM planes
+JOIN flights ON planes.tailnum = flights.tailnum
+GROUP BY manufacturer
+ORDER BY total_distance DESC
+LIMIT 1;
+
+6. Which airport had most flights on weekends?
+Ans:
+
+SELECT a.AIRPORT, COUNT(*) AS num_flights
+FROM flights f
+JOIN airports a ON f.origin = a.IATA_CODE
+WHERE f.dayOfWeek IN (6, 7) -- 6 represents Saturday, 7 represents Sunday
+GROUP BY a.AIRPORT
+ORDER BY num_flights DESC
+LIMIT 1;
